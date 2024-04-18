@@ -44,6 +44,21 @@ List your poetry environments: `poetry env list`
 Delete your poetry environment: `poetry env remove name_of_env`
 
 ## Usage 
+
+Initialise NoSql database to save original text and word frequencies using the command below. 
+
+Note: Initialisation of the database requires Docker pre-installed on your machine. 
+
+`> init-database`  
+
+  
+MongoDB is used to save the results of csv-parsing.  
+```
+Document 1: {"id": 1234, "source": "Online", "original_text": "this is a sentence with the word sentence repeated again", "word_frequencies": {"sentence": 2, "word": 1, "repeated": 1}}
+
+Document 2: {"id": 1235, "source": "Online", "original_text": "test sentence similar to sentence in document 1", "word_frequencies": {"test": 1, "sentence": 2, "similar": 1, "document": 1}}
+```
+
 To run CSV parsing after installation of the package. 
 `csv-parser --path '\\path\to\your\raw.csv' --stop-words additional stop words` 
 
