@@ -5,8 +5,12 @@ import csv
 import string
 import argparse
 import stopwords
+import logging 
 import emoji
 from io import StringIO
+from moonshot.db import insert_to_collections
+from moonshot.constants import DB_NAME, COLLECTION_NAME
+
 
 FILE_PATH = os.path.join(os.path.dirname(__file__), "initial_dir/raw.csv")
 POST_PROCESS_DIR = os.path.join(os.path.dirname(__file__), "post_processing")
@@ -61,7 +65,7 @@ def process_text(text, additional_stop_words=""):
         )
     
     # remove emoji 
-    text = remove_emoji("".join(text))
+    text = remove_emoji(" ".join(text))
     
     # remove numbers 
     text = re.sub("[\-\+]{,1}[0-9]+(\.[0-9]+)*\s*[KMBkmb]*", " ", text) 
@@ -92,33 +96,49 @@ def word_frequency(text):
     return freq
 
 def move_file_2_post_processing(source_file_path):
+    
     # Move file from initial_dir to post_processing directory
     base_name = os.path.basename(source_file_path)
     dest_file_path = os.path.join(POST_PROCESS_DIR, base_name)
+    logging.info(f"Moving: {source_file_path} >> {dest_file_path}")
     os.rename(source_file_path, dest_file_path)
 
+
 def save_data_2_database(csv_data, word_frequencies):
-    print("Save data to database: Under construction!!")
+    logging.info("Saving parsed csv data along with it's word frequencies to MongoDB")
+    logging.info(f"Database name: {DB_NAME}")
+    logging.info(f"Collection name: {COLLECTION_NAME}")
+    breakpoint()
+    insert_to_collections()
+
     return 
 
 def post_process(source_file_path, csv_data, word_frequencies):
+    logging.info("Commencing post-processing operations")
     # Move file to another location
     move_file_2_post_processing(source_file_path=source_file_path)
 
     # save data to database 
     save_data_2_database(csv_data, word_frequencies)
-    return 
+    
 
 def main():
     args = cli_args()
+    logging.info('Parsing csv ...')
     csv_data = read_csv(args.path)
-    word_frequencies = []
+    logging.info("Parsing complete. ")
+
+
+    logging.info("Cleaning text field and calculating word frequencies...")
     for row in csv_data:
         text = process_text(text=row['original_text'],additional_stop_words= args.stop_words)
-        word_frequencies.append(word_frequency(text))
-    post_process(source_file_path = args.path,csv_data= csv_data, word_frequencies= word_frequencies)
+        row["word_frequencies"] = word_frequency(text)
+        row["_id"] = row.pop("id")
 
-    return word_frequencies
+    print("CSV parsing and text cleaning successful. ")
+    post_process(source_file_path = args.path,csv_data= csv_data)
+
+    return 
 
 
 if __name__ == "__main__":
