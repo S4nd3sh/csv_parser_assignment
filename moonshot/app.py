@@ -10,7 +10,8 @@ import emoji
 from io import StringIO
 from moonshot.db import insert_to_collections
 from moonshot.constants import DB_NAME, COLLECTION_NAME
-logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
+
+logging.basicConfig(format="%(asctime)s - %(message)s", level=logging.INFO)
 
 FILE_PATH = os.path.join(os.path.dirname(__file__), "initial_dir/raw.csv")
 POST_PROCESS_DIR = os.path.join(os.path.dirname(__file__), "post_processing")
@@ -55,6 +56,8 @@ def remove_punctuations(text):
     # https://stackoverflow.com/questions/265960/best-way-to-strip-punctuation-from-a-string
     return text.translate(str.maketrans("", "", string.punctuation))
 
+def remove_numbers(text):
+    return re.sub("[\-\+]{,1}[0-9]+(\.[0-9]+)*\s*[KMBkmb]*", " ", text)
 
 def process_text(text, additional_stop_words=""):
     # Remove standard stop words of English from the text
@@ -67,7 +70,7 @@ def process_text(text, additional_stop_words=""):
     text = remove_emoji(" ".join(text))
 
     # remove numbers
-    text = re.sub("[\-\+]{,1}[0-9]+(\.[0-9]+)*\s*[KMBkmb]*", " ", text)
+    text = remove_numbers(text)
 
     # remove punctuations
     text = remove_punctuations(text)
@@ -107,7 +110,7 @@ def move_file_2_post_processing(source_file_path):
 def save_data_2_database(csv_data):
     logging.info("Saving parsed csv data along with it's word frequencies to MongoDB")
     logging.info(f"Database name: {DB_NAME}")
-    logging.info(f"Collection name: {COLLECTION_NAME}")    
+    logging.info(f"Collection name: {COLLECTION_NAME}")
     insert_to_collections(
         database_name=DB_NAME, collection_name=COLLECTION_NAME, data=csv_data
     )
@@ -120,7 +123,8 @@ def post_process(source_file_path, csv_data):
     move_file_2_post_processing(source_file_path=source_file_path)
 
     # save data to database
-    save_data_2_database(csv_data)    
+    save_data_2_database(csv_data)
+
 
 def main():
     args = cli_args()

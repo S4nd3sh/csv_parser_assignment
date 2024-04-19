@@ -1,7 +1,8 @@
 import os
-import subprocess 
-import pymongo 
-from moonshot.constants import * 
+import subprocess
+import pymongo
+from moonshot.constants import *
+
 
 def init_database():
     # Run docker command to up mongo DB
@@ -17,11 +18,13 @@ def init_database():
 def get_client():
     return pymongo.MongoClient(DB_URL)
 
+
 def get_databases():
     client = get_client()
     return client.list_database_names()
 
-def get_database_collections(database_name = "moonshot"):
+
+def get_database_collections(database_name="moonshot"):
     client = get_client()
     db = client[database_name]
     return db.list_collection_names()
@@ -35,7 +38,6 @@ def insert_to_collections(database_name, collection_name, data):
     db = client[database_name]
     collections = db[collection_name]
     return collections.insert_many(data)
-
 
 
 # from sqlalchemy import create_engine, Column, Integer, String
@@ -63,10 +65,6 @@ def insert_to_collections(database_name, collection_name, data):
 #     return Session()
 
 
-
-
 # def main():
-    
-#    pass
 
-    
+#    pass
