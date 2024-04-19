@@ -69,5 +69,8 @@ To run CSV parsing after installation of the package.
 - <code>--ignore-database</code>:  
   If <code>--ignore-database</code> this flag is set database insert will be skipped. 
 
+Run: `csv-parser --ignore-database` to run on a machine that doesn't have docker already installed.  
+(Note: `init-database` must be run before running `csv-parser` command without '--ignore-database' flag if database insert is required. )
+
 ### Running tests
 Run `pytest` while staying in the directory that contains 'tests' dir. 
