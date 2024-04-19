@@ -97,7 +97,7 @@ def move_file_2_post_processing(source_file_path):
     dest_file_path = os.path.join(POST_PROCESS_DIR, base_name)
     os.rename(source_file_path, dest_file_path)
 
-def save_data_2_database():
+def save_data_2_database(csv_data, word_frequencies):
     print("Save data to database: Under construction!!")
     return 
 

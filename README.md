@@ -34,33 +34,36 @@ The below is the details of assignment provided.
 </ul>
 
 ## Setting up environment 
-Install Poetry using pip command `pip install poetry`
+- Install Poetry using pip command `pip install poetry` for your default python   
+- Initialise and activate your virtual environment: Change into '\moonshot' directory in your terminal where pyproject.toml file exists and execute  `poetry shell`  
+- Activate your environment on new terminal: `poetry shell`  
+- Install package: `poetry install` within your virtual environment  
+- Deactivate your environment: `deactivate`  
+- List your poetry environments: `poetry env list`  
+- Delete your poetry environment: `poetry env remove name_of_env`
 
-Initialise and activate your virtual environment: Change into '\moonshot' directory in your terminal where pyproject.toml file exists and execute  `poetry shell`  
-Activate your environment on new terminal: `poetry shell`  
-Install package: `poetry install` within your virtual environment  
-Deactivate your environment: `deactivate`  
-List your poetry environments: `poetry env list`  
-Delete your poetry environment: `poetry env remove name_of_env`
+## Setting up database
 
-## Usage 
-
-Initialise NoSql database to save original text and word frequencies using the command below. 
+Initialise MongoDB NoSql database to save original text and word frequencies using the command below. 
 
 Note: Initialisation of the database requires Docker pre-installed on your machine. 
 
-`> init-database`  
+RUN: `> init-database`  
 
-  
-MongoDB is used to save the results of csv-parsing.  
 ```
 Document 1: {"id": 1234, "source": "Online", "original_text": "this is a sentence with the word sentence repeated again", "word_frequencies": {"sentence": 2, "word": 1, "repeated": 1}}
 
 Document 2: {"id": 1235, "source": "Online", "original_text": "test sentence similar to sentence in document 1", "word_frequencies": {"test": 1, "sentence": 2, "similar": 1, "document": 1}}
 ```
 
+## App usage
 To run CSV parsing after installation of the package. 
 `csv-parser --path '\\path\to\your\raw.csv' --stop-words additional stop words` 
 
-If not supplied it defaults to file.csv in the library
 
+- <code>--path</code>:  
+  If <code>--path</code> argument is not supplied it defaults to '..\moonshot\initial_dir\raw.csv' present within the library. 
+- <code>--stop-words</code>:  
+  This argument appends more stop words to existing list of stop-words.
+  Stop words for this library are retrieved through the stopwords library -
+  https://github.com/astuanax/stopwords/tree/master 
