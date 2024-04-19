@@ -57,6 +57,14 @@ Document 2: {"_id": 1235, "source": "Online", "original_text": "test sentence si
 ```
 
 ## App usage
+
+First time usage:
+1. Activate poetry virtual environment.  
+   RUN: `poetry shell`
+2. Install moonshot package inside virtual environment.  
+   RUN: `poetry install`
+
+
 To run CSV parsing after installation of the package. 
 `csv-parser --path '\\path\to\your\raw.csv' --stop-words additional stop words`  
 
@@ -68,6 +76,9 @@ To run CSV parsing after installation of the package.
   https://github.com/astuanax/stopwords/tree/master 
 - <code>--ignore-database</code>:  
   If <code>--ignore-database</code> this flag is set database insert will be skipped. 
+
+Note: CSV file will move from '..\moonshot\initial_dir' to '..\moonshot\post_processing' after a complete run of `csv-parser` command.
+Consecutive runs will fail unless 'raw.csv' is moved back to '..\moonshot\initial_dir'
 
 Run: `csv-parser --ignore-database` to run on a machine that doesn't have docker already installed.  
 (Note: `init-database` must be run before running `csv-parser` command without '--ignore-database' flag if database insert is required. )
