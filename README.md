@@ -70,4 +70,4 @@ To run CSV parsing after installation of the package.
   If <code>--ignore-database</code> this flag is set database insert will be skipped. 
 
 ### Running tests
-Run `pytest` while staying in the directory that contains 'moonshot' dir. 
+Run `pytest` while staying in the directory that contains 'tests' dir. 
