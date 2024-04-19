@@ -51,15 +51,14 @@ Note: Initialisation of the database requires Docker pre-installed on your machi
 RUN: `> init-database`  
 
 ```
-Document 1: {"id": 1234, "source": "Online", "original_text": "this is a sentence with the word sentence repeated again", "word_frequencies": {"sentence": 2, "word": 1, "repeated": 1}}
+Document 1: {"_id": 1234, "source": "Online", "original_text": "this is a sentence with the word sentence repeated again", "word_frequencies": {"sentence": 2, "word": 1, "repeated": 1}}
 
-Document 2: {"id": 1235, "source": "Online", "original_text": "test sentence similar to sentence in document 1", "word_frequencies": {"test": 1, "sentence": 2, "similar": 1, "document": 1}}
+Document 2: {"_id": 1235, "source": "Online", "original_text": "test sentence similar to sentence in document 1", "word_frequencies": {"test": 1, "sentence": 2, "similar": 1, "document": 1}}
 ```
 
 ## App usage
 To run CSV parsing after installation of the package. 
-`csv-parser --path '\\path\to\your\raw.csv' --stop-words additional stop words` 
-
+`csv-parser --path '\\path\to\your\raw.csv' --stop-words additional stop words`  
 
 - <code>--path</code>:  
   If <code>--path</code> argument is not supplied it defaults to '..\moonshot\initial_dir\raw.csv' present within the library. 
@@ -67,6 +66,7 @@ To run CSV parsing after installation of the package.
   This argument appends more stop words to existing list of stop-words.
   Stop words for this library are retrieved through the stopwords library -
   https://github.com/astuanax/stopwords/tree/master 
+
 
 ### Running tests
 Run `pytest` while staying in the directory that contains 'moonshot' dir. 
