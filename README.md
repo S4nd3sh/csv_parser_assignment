@@ -67,3 +67,6 @@ To run CSV parsing after installation of the package.
   This argument appends more stop words to existing list of stop-words.
   Stop words for this library are retrieved through the stopwords library -
   https://github.com/astuanax/stopwords/tree/master 
+
+### Running tests
+Run `pytest` while staying in the directory that contains 'moonshot' dir. 

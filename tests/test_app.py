@@ -2,7 +2,7 @@ from moonshot.app import process_text
 
 
 """
-pytest tests\test_app.py::
+pytest tests\test_app.py::test_remove_stop_words
 """
 
 def test_remove_stop_words():
@@ -12,3 +12,5 @@ def test_remove_stop_words():
     text2 = "I owe party X 3K Euros"    
     assert process_text(text2)=='owe party x euros'
     
+    text3 = "123456789"
+    assert process_text(text3)==''
