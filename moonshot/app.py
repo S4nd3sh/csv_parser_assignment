@@ -11,7 +11,7 @@ from io import StringIO
 from moonshot.db import insert_to_collections
 from moonshot.constants import DB_NAME, COLLECTION_NAME
 
-logging.basicConfig(format="%(asctime)s - %(message)s", level=logging.INFO)
+logging.basicConfig(format="%(asctime)s - %(levelname)s :: %(message)s", level=logging.INFO)
 
 FILE_PATH = os.path.join(os.path.dirname(__file__), "initial_dir/raw.csv")
 POST_PROCESS_DIR = os.path.join(os.path.dirname(__file__), "post_processing")
@@ -40,6 +40,12 @@ def cli_args():
         help="you can supply additional stop words other than the default if required"
         "-s additional stop words",
     )
+    parser.add_argument(
+        '--ignore-database',
+        help='database operations will not be performed if this flag is set',
+        action='store_true',
+        default=False
+    )    
     argv = sys.argv[1:]
     args = parser.parse_args(argv)
     if not os.path.exists(args.path):
@@ -57,7 +63,7 @@ def remove_punctuations(text):
     return text.translate(str.maketrans("", "", string.punctuation))
 
 def remove_numbers(text):
-    return re.sub("[\-\+]{,1}[0-9]+(\.[0-9]+)*\s*[KMBkmb]*", " ", text)
+    return re.sub(r"[\-\+]{,1}[0-9]+(\.[0-9]+)*\s*[KMBkmb]*", " ", text)
 
 def process_text(text, additional_stop_words=""):
     # Remove standard stop words of English from the text
@@ -114,14 +120,17 @@ def save_data_2_database(csv_data):
     insert_to_collections(
         database_name=DB_NAME, collection_name=COLLECTION_NAME, data=csv_data
     )
-    logging.info("Data save successful.")
+    logging.info("Data save successful.\n")
 
 
-def post_process(source_file_path, csv_data):
+def post_process(source_file_path, csv_data, ignore_database):
     logging.info("-- Commencing post-processing operations --")
     # Move file to another location
     move_file_2_post_processing(source_file_path=source_file_path)
 
+    if ignore_database:
+        logging.warning("--ignore-database flag is set and database insert will not be performed.")
+        return 
     # save data to database
     save_data_2_database(csv_data)
 
@@ -141,8 +150,8 @@ def main():
         row["_id"] = row.pop("id")
 
     logging.info("CSV parsing and text cleaning successful. ")
-    post_process(source_file_path=args.path, csv_data=csv_data)
-    logging.info("..\n\t-- Moonshot csv-parser completed successfully. --")
+    post_process(source_file_path=args.path, csv_data=csv_data, ignore_database = args.ignore_database)
+    logging.info("== Moonshot csv-parser completed successfully. ==")
 
 
 if __name__ == "__main__":
